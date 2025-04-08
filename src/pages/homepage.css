@@ -1,0 +1,45 @@
+/* homepage.css */
+
+body {
+    background-color: #d8d8e7;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  /* Full screen height */
+    text-align: center;
+    flex-direction: column;
+  }
+  
+  .home-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .home-description {
+    font-size: 18px;
+    margin-bottom: 30px;
+    max-width: 600px;
+  }
+  
+  .get-started-button {
+    background-color: #ff4081;
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .get-started-button:hover {
+    background-color: #e6005c;
+  }
+  

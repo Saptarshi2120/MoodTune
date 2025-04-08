@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import AuthModal from "./pages/components/AuthModal";
+import InfoModal from "./pages/components/InfoModal";
+import EmotionQuiz from "./pages/components/EmotionQuiz";
+import Sidebar from './pages/components/Sidebar/Sidebar';
+import DashboardPage from "./pages/DashboardPage";
+import QuestionsPage from "./pages/QuestionsPage";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/emotionquiz" element={<EmotionQuiz />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/sidebar" element={<Sidebar />} />
+        
+       
+      </Routes>
+      <AuthModal />
+      <InfoModal />
+     
+    </Router>
   );
-}
+};
 
 export default App;

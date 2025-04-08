@@ -1,0 +1,16 @@
+/* src/pages/DashboardPage.css */
+.dashboard-page {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #1e1e2f;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    padding: 20px;
+  }
+  

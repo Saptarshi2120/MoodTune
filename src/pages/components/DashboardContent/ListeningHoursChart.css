@@ -1,0 +1,69 @@
+.listening-hours-chart-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.listening-hours-chart-container h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.listening-hours-chart-container .clicked-info {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.listening-hours-chart-container .chart {
+  display: flex;
+  align-items: flex;
+  height: 200px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.listening-hours-chart-container .bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 15px;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.listening-hours-chart-container .bar {
+  background-color: #5bc0de;
+  width: 100%;
+  margin-bottom: 5px;
+  border-radius: 3px 3px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  color: white;
+  font-size: 0.8rem;
+  position: relative;
+}
+
+.listening-hours-chart-container .bar span {
+  position: absolute;
+  top: -20px; /* Adjust position above the bar */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.listening-hours-chart-container .day {
+  font-size: 0.8rem;
+  color: #777;
+}
