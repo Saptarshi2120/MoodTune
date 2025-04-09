@@ -7,7 +7,7 @@ import './DashboardContent.css';
 
 function DashboardContent() {
   const dailyListeningHours = 4;
-  const last30DaysListeningHours = 120;
+  const last30DaysListeningHours = 128;
   const listeningHoursData = {
     Mon: 6,
     Tue: 8,
