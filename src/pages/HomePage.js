@@ -247,7 +247,7 @@ const HomePage = () => {
         : "bg-white text-blue-600 hover:bg-blue-100"
     }`}
   >
-    Dashboard
+    Analytics
   </button>
 </Link>
 
@@ -314,7 +314,7 @@ const HomePage = () => {
         {/* Content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto">
           <h1 className={`text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r ${isDarkMode ? "from-purple-400 to-pink-400" : "from-purple-600 to-pink-600"}`}>
-            Let AI Find the Perfect Playlist for Your Mood!
+            Let Us  Find the Perfect Playlist for Your Mood!
           </h1>
 
           <p className={`text-xl mb-8 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
@@ -332,12 +332,15 @@ const HomePage = () => {
           {/* Mood Selection */}
           <div className={`mt-16 p-6 rounded-xl ${isDarkMode ? "bg-gray-800/50" : "bg-white/50"} backdrop-blur-lg`}>
             <h2 className={`text-2xl font-semibold mb-4 ${isDarkMode ? "text-white" : "text-gray-800"}`}>
-              How are you feeling today?
+            You feel! We care,because caring isn’t optional — it’s our core.
             </h2>
             <div className="flex justify-center gap-6">
               <button className="text-4xl hover:scale-125 transition-transform">😊</button>
               <button className="text-4xl hover:scale-125 transition-transform">😢</button>
               <button className="text-4xl hover:scale-125 transition-transform">😡</button>
+              <button className="text-4xl hover:scale-125 transition-transform">😲</button>
+              <button className="text-4xl hover:scale-125 transition-transform">😱</button>
+              <button className="text-4xl hover:scale-125 transition-transform">🤢</button>
             </div>
           </div>
         </div>

@@ -667,23 +667,106 @@ export default function EmotionQuiz({ isDarkMode }) {
               </button>
             </motion.div>
 
-            {/* ✅ Static Design Block Below Questions */}
-            <div
-              className={`mt-6 text-sm ${
-                isDarkMode ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
-              <p className="italic">
+            <div className="mt-6 text-sm text-gray-600 text-center">
+              <p>✨ Your thoughts matter — share freely and honestly!</p>
+
+              <motion.div
+                className="flex justify-center gap-6 mt-4"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <motion.div
+                  className="p-3 bg-purple-100 rounded-full shadow-lg"
+                  animate={{ scale: [1, 1.1, 1], y: [0, -3, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <span
+                    role="img"
+                    aria-label="lock"
+                    className="text-purple-600 text-2xl"
+                  >
+                    🔒
+                  </span>
+                </motion.div>
+
+                <motion.div
+                  className="p-3 bg-yellow-100 rounded-full shadow-lg"
+                  animate={{ scale: [1, 1.1, 1], y: [0, 3, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut",
+                    delay: 1,
+                  }}
+                >
+                  <span
+                    role="img"
+                    aria-label="sparkles"
+                    className="text-yellow-500 text-2xl"
+                  >
+                    ✨
+                  </span>
+                </motion.div>
+              </motion.div>
+
+              <p className="mt-2 text-xs text-gray-500">
                 Your honest answers will help us better understand your mood and personalize your experience.
-              </p>
-              <p className="mt-2">
+                <br />
                 Don’t worry — your data stays safe and private ✨
               </p>
+
+              {/* ⚡️ Groundbreaking Emotion-Based Animation */}
+              <motion.div
+                className="relative mt-6 h-24 flex justify-center items-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2 }}
+              >
+                <div className="absolute w-40 h-40 bg-gradient-to-br from-purple-400 via-pink-400 to-yellow-300 blur-2xl rounded-full opacity-30 animate-pulse"></div>
+                <motion.div
+                  className="text-white text-lg font-semibold tracking-wide px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-lg ring-4 ring-purple-300/30"
+                  animate={{ scale: [1, 1.05, 1], rotate: [0, 2, -2, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 3,
+                    ease: "easeInOut",
+                  }}
+                >
+                  🎶 Emotions shape music — let’s discover yours!
+                </motion.div>
+              </motion.div>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
+      {/* 🎵 Disco-Style Equalizer Animation at Bottom */}
+<div className="absolute bottom-0 left-0 w-full flex justify-center gap-1 pb-4 pointer-events-none z-0">
+  {Array.from({ length: 30 }).map((_, index) => (
+    <motion.div
+      key={index}
+      className="w-1 md:w-1.5 bg-gradient-to-t from-pink-400 via-purple-500 to-indigo-500 rounded-full"
+      initial={{ height: "0.5rem" }}
+      animate={{ height: ["0.5rem", "2rem", "0.8rem", "1.5rem", "1rem"] }}
+      transition={{
+        duration: 1.5,
+        repeat: Infinity,
+        repeatType: "mirror",
+        delay: index * 0.1,
+        ease: "easeInOut",
+      }}
+    />
+  ))}
+</div>
+
     </div>
   );
 }
+
+
 
