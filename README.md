@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -73,3 +74,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # moodtune
 final sem project
 >>>>>>> bb2d755d83405aaee338cb03f84ccf6bd8f56289
+=======
+# Moodtune
+>>>>>>> 3969551c4072ec35b9ec0bf9a86cf45019045d85
