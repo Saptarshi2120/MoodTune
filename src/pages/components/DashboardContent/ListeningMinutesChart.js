@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 // ListeningMinutesChart.js
 /*
 import React from 'react';
@@ -38,7 +37,7 @@ const ListeningMinutesChart = ({ listeningMinutesData }) => {
 };
 
 export default ListeningMinutesChart;*/
->>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
+
 import React from 'react';
 import {
   LineChart,
@@ -77,11 +76,9 @@ function ListeningMinutesChart({ listeningMinutesData }) {
   );
 }
 
-<<<<<<< HEAD
+
+
 export default ListeningMinutesChart;
-=======
-export default ListeningMinutesChart;
 
 
 
->>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee

@@ -25,8 +25,7 @@ h1 {
 .middle-row > *,
 .bottom-row > * {
   flex: 1;
-<<<<<<< HEAD
-=======
+
 }
 
 .middle-row {
@@ -61,7 +60,7 @@ h1 {
 .middle-row > *,
 .bottom-row > * {
   flex: 1;
->>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
+
   min-width: 300px;
   max-width: 48%;
   height: 300px;
@@ -71,8 +70,7 @@ h1 {
   color: black;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
+
+

@@ -1,10 +1,10 @@
-<<<<<<< HEAD
+
 // import React, { useState } from 'react';
 // import './ListeningHoursChart.css';
-=======
+
 /*import React, { useState } from 'react';
 import './ListeningHoursChart.css';
->>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
+
 
 // function ListeningHoursChart({ dailyListeningHours }) {
 //   const maxHours = 24;
@@ -37,9 +37,9 @@ import './ListeningHoursChart.css';
 //   );
 // }
 
-<<<<<<< HEAD
+
 // export default ListeningHoursChart;
-=======
+
 export default ListeningHoursChart;
 */
->>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
+
