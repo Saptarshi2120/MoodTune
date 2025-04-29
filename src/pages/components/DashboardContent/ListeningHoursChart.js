@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import './ListeningHoursChart.css';
 
 function ListeningHoursChart({ dailyListeningHours }) {
@@ -33,3 +33,4 @@ function ListeningHoursChart({ dailyListeningHours }) {
 }
 
 export default ListeningHoursChart;
+*/

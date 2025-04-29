@@ -1,4 +1,4 @@
-.listening-hours-chart-container {
+/*.listening-hours-chart-container {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -58,7 +58,7 @@
 
 .listening-hours-chart-container .bar span {
   position: absolute;
-  top: -20px; /* Adjust position above the bar */
+  top: -20px; 
   left: 50%;
   transform: translateX(-50%);
 }
@@ -66,4 +66,4 @@
 .listening-hours-chart-container .day {
   font-size: 0.8rem;
   color: #777;
-}
+}*/
