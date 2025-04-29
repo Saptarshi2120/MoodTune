@@ -4,14 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "./styles.css";
-
-
+import { Auth0Provider } from '@auth0/auth0-react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Auth0Provider
+      domain="moodtune.us.auth0.com"
+      clientId="af4PYp1fyayfSoWeFa2mrIS7KZk2ctZb"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: "https://moodtune-api"
+      }}
+    >
+      <App />
+    </Auth0Provider>
   </React.StrictMode>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

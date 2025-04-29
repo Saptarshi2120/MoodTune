@@ -1,45 +1,143 @@
 /* homepage.css */
 
+/* General Styles */
 body {
-    background-color: #d8d8e7;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .home-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;  /* Full screen height */
-    text-align: center;
-    flex-direction: column;
-  }
-  
-  .home-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .home-description {
-    font-size: 18px;
-    margin-bottom: 30px;
-    max-width: 600px;
-  }
-  
-  .get-started-button {
-    background-color: #ff4081;
-    color: white;
-    padding: 12px 24px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .get-started-button:hover {
-    background-color: #e6005c;
-  }
-  
+  background-color: #0a0a1f; /* Dark background for the whole page */
+  color: white; /* White text for readability */
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;  /* Full screen height */
+  text-align: center;
+  flex-direction: column;
+}
+
+.home-title {
+  font-size: 3rem; /* Adjusted size */
+  font-weight: bold;
+  margin-bottom: 20px;
+  background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #7c3aed, #d8b4fe);
+}
+
+.home-description {
+  font-size: 1.125rem; /* Adjusted font size */
+  margin-bottom: 30px;
+  max-width: 600px;
+  color: #e0e0e0; /* Light grey text for description */
+}
+
+/* Get Started Button */
+.get-started-button {
+  background-color: #7c3aed; /* Purple background for primary button */
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem; /* Adjusted font size */
+  border: none;
+  border-radius: 30px; /* Rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.get-started-button:hover {
+  background-color: #d8b4fe; /* Lighter purple on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Button Styling for Login/Logout */
+.auth-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.auth-button:hover {
+  transform: scale(1.05);
+}
+
+.auth-button-login {
+  background-color: #4caf50; /* Green for Login button */
+  color: white;
+}
+
+.auth-button-login:hover {
+  background-color: #45a049; /* Darker green for hover */
+}
+
+.auth-button-logout {
+  background-color: #f44336; /* Red for Logout button */
+  color: white;
+}
+
+.auth-button-logout:hover {
+  background-color: #e53935; /* Darker red for hover */
+}
+
+/* Modal Styles (if applicable) */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-header {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-button-cancel {
+  background-color: #e0e0e0;
+}
+
+.modal-button-confirm {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-button-cancel:hover {
+  background-color: #bdbdbd;
+}
+
+.modal-button-confirm:hover {
+  background-color: #45a049;
+}
