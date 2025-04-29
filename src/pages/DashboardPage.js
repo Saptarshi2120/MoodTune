@@ -1,4 +1,5 @@
 // src/pages/DashboardPage.js
+
 import React from 'react';
 import Sidebar from './components/Sidebar/Sidebar';
 import DashboardContent from './components/DashboardContent/DashboardContent';
@@ -14,3 +15,5 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+
+

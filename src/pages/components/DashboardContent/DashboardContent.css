@@ -1,3 +1,39 @@
+/*.dashboard-content {
+  padding: 20px;
+  background-color: #15152b;
+  min-height: 100vh;
+  color: #fff;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.top-row,
+.middle-row,
+.bottom-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Common box style for all widgets */
+.top-row > *,
+.middle-row > *,
+.bottom-row > * {
+  flex: 1;
+<<<<<<< HEAD
+=======
+}
+
+.middle-row {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}*/
 .dashboard-content {
   padding: 20px;
   background-color: #15152b;
@@ -25,6 +61,7 @@ h1 {
 .middle-row > *,
 .bottom-row > * {
   flex: 1;
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
   min-width: 300px;
   max-width: 48%;
   height: 300px;
@@ -34,4 +71,8 @@ h1 {
   color: black;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee

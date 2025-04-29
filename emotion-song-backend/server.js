@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 // // server.js
+=======
+// server.js
+
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
 // const express = require('express');
 // const cors = require('cors');
 // const pool = require('./db');
 // const app = express();
 
+<<<<<<< HEAD
 // // Middleware
 // app.use(cors());
 // app.use(express.json());
@@ -62,6 +68,14 @@
 // app.listen(PORT, () => {
 //   console.log(`🚀 Server running at http://localhost:${PORT}`);
 // });
+=======
+// Middleware
+// app.use(cors());
+// app.use(express.json());
+
+// Get all data (example route)
+
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
 const express = require('express');
 const cors = require('cors');
 const pool = require('./db'); // Import the database connection from db.js
@@ -138,4 +152,5 @@ app.post('/api/submit', upload.single('image'), async (req, res) => {
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
+
 });

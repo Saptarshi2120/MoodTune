@@ -1,3 +1,44 @@
+<<<<<<< HEAD
+=======
+// ListeningMinutesChart.js
+/*
+import React from 'react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+  Dot
+} from 'recharts';
+
+const ListeningMinutesChart = ({ listeningMinutesData }) => {
+  return (
+    <div style={{ width: '100%', height: 300, backgroundColor: '#fff', padding: '20px', borderRadius: '12px' }}>
+      <h3 style={{ textAlign: 'center', color: '#000' }}>Daily Listening Time (in Minutes)</h3>
+      <ResponsiveContainer>
+        <LineChart data={listeningMinutesData}>
+          <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+          <XAxis dataKey="day" stroke="#000" />
+          <YAxis stroke="#000" />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey="minutes"
+            stroke="#ff3c3c"
+            strokeWidth={3}
+            dot={{ stroke: '#ff3c3c', strokeWidth: 2, r: 5, fill: '#fff' }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default ListeningMinutesChart;*/
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
 import React from 'react';
 import {
   LineChart,
@@ -36,4 +77,11 @@ function ListeningMinutesChart({ listeningMinutesData }) {
   );
 }
 
+<<<<<<< HEAD
 export default ListeningMinutesChart;
+=======
+export default ListeningMinutesChart;
+
+
+
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee

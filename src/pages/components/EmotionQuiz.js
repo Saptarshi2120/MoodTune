@@ -1232,6 +1232,10 @@ export default function EmotionQuiz({ isDarkMode }) {
   const handleCameraError = (error) => {
     setCameraError(error.message);
     alert(`Camera Error: ${error.message}. Please ensure your camera is connected and allowed, then try again.`);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
     setShowCamera(false);
   };
 
@@ -1332,6 +1336,10 @@ export default function EmotionQuiz({ isDarkMode }) {
             className="h-full bg-purple-600"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
             transition={{ duration: 0.5 }}
           />
         </div>
@@ -1455,6 +1463,7 @@ export default function EmotionQuiz({ isDarkMode }) {
           className="h-full bg-purple-600"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
+
           transition={{ duration: 0.5 }}
         />
       </div>
@@ -1607,9 +1616,13 @@ export default function EmotionQuiz({ isDarkMode }) {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
 
 
 
 
 
+=======
+}
+>>>>>>> 2ddb15b86cb92fc0be7d41510e2d36450a10ceee
