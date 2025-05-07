@@ -1284,24 +1284,25 @@ export default function EmotionQuiz({ isDarkMode }) {
     formData.append("answers", JSON.stringify(answers));
     formData.append("image", blob, "webcam_capture.jpg");
 
-    fetch("http://localhost:5000/api/submit", {
+    fetch("http://127.0.0.1:8000/api/submit", {
       method: "POST",
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("Response from server:", data);
-        // alert("Image and answers submitted successfully!");
-        fetch("http://localhost:5000/api/image-latest")
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.image) {
-              setLatestImage(data.image);
-            }
-          })
-          .catch((err) => {
-            console.error("Error fetching image:", err);
-          });
+        alert("Image and answers submitted successfully!");
+        // fetch("http://127.0.0.1:8000/api/store-user")
+        //   .then((res) => res.json())
+        //   .then((data) => {
+        //     if (data.image) {
+        //       setLatestImage(data.image);
+              
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.error("Error fetching image:", err);
+        //   });
       })
       .catch((error) => {
         console.error("Error:", error);
