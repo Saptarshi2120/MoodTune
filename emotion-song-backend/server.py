@@ -5,6 +5,15 @@ import json
 import uvicorn
 import httpx
 from io import BytesIO
+from PIL import Image
+import httpx, json, io
+from fastapi import FastAPI, Form, UploadFile, File
+from PIL import Image
+import json
+import httpx
+import os
+import psycopg2
+from uuid import uuid4
 
 app = FastAPI()
 
@@ -70,7 +79,7 @@ def get_songs():
 @app.post("/api/submit")
 async def submit_data(
     answers: str = Form(...),
-    image: UploadFile = File(None)
+    image: UploadFile = File(...)
 ):
     try:
         print("📩 Incoming POST request")
@@ -84,29 +93,40 @@ async def submit_data(
 
         print("✅ Parsed answers:", parsed_answers)
 
-        # 2. Extract answers
+        # 2. Extract specific answers
         ans_1 = parsed_answers.get("How has your day been so far?")
         ans_2 = parsed_answers.get("What's the one emoji that best describes your mood?")
         ans_3 = parsed_answers.get("What's your current mindset like?")
         language = parsed_answers.get("What is your preferred language for songs?")
+        combined_text = f"{ans_1} {ans_2} {ans_3} {language}"
+        print("📝 Combined text:", combined_text)
 
-        print("📝 Extracted Answers:", ans_1, ans_2, ans_3, language)
+        # 3. Save image to disk
+        UPLOAD_FOLDER = "uploads"
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        file_ext = os.path.splitext(image.filename)[-1]
+        filename = f"webcam_{uuid4().hex}{file_ext}"
+        image_path = os.path.abspath(os.path.join(UPLOAD_FOLDER, filename))  # changed to absolute path
 
-        # 3. Read image as raw bytes (if exists)
-        image_data = await image.read() if image else None
+        with open(image_path, "wb") as f:
+            content = await image.read()
+            f.write(content)
 
+        print("📸 Image saved to:", image_path)
+
+        # 4. Send to prediction API
         async with httpx.AsyncClient() as client:
             url = "http://127.0.0.1:9000/predict/"
-            
-            # Combine answers into one string for the text parameter
-            combined_text = ans_1 + " " + ans_2 + " " + ans_3 + " " + language
-            
-            # Prepare files and data to be sent to the prediction API
-            params = {
-            "email": "anonymous@exha44mpled.com",
-            "text": combined_text
+            data = {
+                "email": "anonymous@11e45874x11ample.com",
+                "text": combined_text,
+                "image_path": image_path
             }
-            response = await client.post(url, params=params)
+
+            print(f"📡 Sending data to prediction API at {url}")
+            print("📦 Payload:", data)
+
+            response = await client.post(url, data=data)
 
             if response.status_code == 200:
                 prediction_data = response.json()
@@ -115,20 +135,7 @@ async def submit_data(
                 print("❌ Error from prediction API:", response.status_code, response.text)
                 return {"error": "Error from prediction API"}
 
-        if image_data:
-            print("🖼️ Image uploaded, size:", len(image_data), "bytes")
-            print("🔍 Image data (first 20 bytes):", image_data[:20])
-            print("📦 Image data type:", type(image_data))
-        else:
-            print("📭 No image uploaded")
-
-        # 4. Dummy user info (can be replaced with actual user data)
-        dummy_email = "anonymous@exha44mpled.com"
-        dummy_auth0_id = "dummy-aut44h0-id"
-        dummy_name = "AnonymousUs44er"
-        dummy_picture = "https://example.com/defa44ult-profile.jpg"
-
-        # 5. Insert into database (store the response from prediction API)
+        # 5. Store in DB
         query = """
             INSERT INTO mood_detection 
             (email, name, picture, auth0_id, ans_1, ans_2, ans_3, language, captured_image)
@@ -136,29 +143,32 @@ async def submit_data(
             RETURNING *;
         """
         values = (
-            dummy_email,
-            dummy_name,
-            dummy_picture,
-            dummy_auth0_id,
+            "anonymous@11e45874x11111ample.com",
+            "AnonymousU11s1441411111er",
+            "https://example.com/d11efa1u1lt-4pro4411fi11le.jpg",
+            "dummy-aut11441111h4011-id",
             ans_1,
             ans_2,
             ans_3,
             language,
-            image_data
+            image_path
         )
 
-        print("📤 Executing query with values:", values)
+        print("📤 Inserting into DB:", values)
         cursor.execute(query, values)
         data = cursor.fetchone()
         conn.commit()
+        print("✅ Data inserted into database:", data)
 
-        print("✅ Data inserted successfully:", data)
-        return {"message": "Data stored successfully"}
+        return {"message": "Data stored successfully", "db_entry": data}
 
     except Exception as e:
-        print("❌ Error during insert:", str(e))
-        return {"error": f"Error saving data: {str(e)}"}
+        print("❌ Exception occurred:", str(e))
+        return {"error": f"Unexpected error: {str(e)}"}
 
+    except Exception as e:
+        print("❌ Exception:", str(e))
+        return {"error": f"Unexpected error: {str(e)}"}
     
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)

@@ -1238,7 +1238,7 @@ export default function EmotionQuiz({ isDarkMode }) {
     setShowCamera(false);
   };
 
-  const captureImageFunc = () => {
+  const captureImageFunc = async () => {
     const imageSrc = webcamRef.current?.getScreenshot();
 
     if (!imageSrc) {
@@ -1247,33 +1247,18 @@ export default function EmotionQuiz({ isDarkMode }) {
       return;
     }
 
+
     setCapturedImage(imageSrc);
-    setCameraStopped(true); // Stop live camera view
+    setCameraStopped(true);
     setIsCameraReady(false);
 
-    // ✅ Stop the camera stream
+    // Stop the camera stream
     const stream = webcamRef.current?.video?.srcObject;
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
 
-    // alert("Image successfully captured!");
 
-    // ✅ Automatically resume camera after 60 seconds
-    setTimeout(() => {
-      setCapturedImage(null);
-      setCameraStopped(false);
-      setIsCameraReady(true); // Restart Camera
-    }, 60000); // 60,000 ms = 60 seconds
-
-    const byteString = atob(imageSrc.split(',')[1]);
-    const mimeString = imageSrc.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([ab], { type: mimeString });
 
     if (!answers || typeof answers !== 'object' || Object.keys(answers).length === 0) {
       alert("No answers provided. Please make sure all questions are answered.");
@@ -1282,32 +1267,38 @@ export default function EmotionQuiz({ isDarkMode }) {
 
     const formData = new FormData();
     formData.append("answers", JSON.stringify(answers));
-    formData.append("image", blob, "webcam_capture.jpg");
 
-    fetch("http://127.0.0.1:8000/api/submit", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Response from server:", data);
-        alert("Image and answers submitted successfully!");
-        // fetch("http://127.0.0.1:8000/api/store-user")
-        //   .then((res) => res.json())
-        //   .then((data) => {
-        //     if (data.image) {
-        //       setLatestImage(data.image);
-              
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.error("Error fetching image:", err);
-        //   });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("Failed to send image and answers. Please try again.");
+
+    //  Use a function to convert base64 to file
+    const base64toFile = (base64String, filename) => {
+        let arr = base64String.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        let u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+      };
+
+    const imageFile = base64toFile(imageSrc, "webcam_capture.jpg");
+    formData.append("image", imageFile);
+
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/submit", {
+        method: "POST",
+        body: formData,
       });
+
+      const data = await response.json();
+      console.log("Response from server:", data);
+      alert("Image and answers submitted successfully!");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to send image and answers. Please try again.");
+    }
   };
 
   const handleNext = () => {
