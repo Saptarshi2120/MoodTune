@@ -4,9 +4,9 @@ from psycopg2.extras import RealDictCursor
 try:
     conn = psycopg2.connect(
         host="localhost",
-        database="emotion_db",
+        database="mood",
         user="postgres",
-        password="1234",
+        password="2002",
         port=5432,
         cursor_factory=RealDictCursor
     )

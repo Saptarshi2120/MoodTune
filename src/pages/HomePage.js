@@ -29,7 +29,7 @@ const HomePage = () => {
   useEffect(() => {
     const storeUser = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/store-user', {
+        const response = await fetch('http://localhost:8000/api/store-user', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -54,6 +54,36 @@ const HomePage = () => {
       storeUser();
     }
   }, [isAuthenticated, user, userSaved]);
+
+
+
+//   useEffect(() => {
+//   const storeUser = async () => {
+//     try {
+//       const formData = new FormData();
+//       formData.append("name", user.name);
+//       formData.append("email", user.email);
+//       formData.append("picture", user.picture);
+//       formData.append("auth0_id", user.sub);
+
+//       const response = await fetch("http://localhost:8000/api/submit", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       const data = await response.json();
+//       console.log("✅ User stored successfully:", data);
+//       setUserSaved(true);
+//     } catch (error) {
+//       console.error("❌ Error storing user:", error.message);
+//     }
+//   };
+
+//   if (isAuthenticated && user && !userSaved) {
+//     storeUser();
+//   }
+// }, [isAuthenticated, user, userSaved]);
+
 
   const handleProtectedClick = async (path) => {
     if (!isAuthenticated) {

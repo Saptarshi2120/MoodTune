@@ -7,6 +7,7 @@ import EmotionQuiz from "./pages/components/EmotionQuiz";
 import Sidebar from './pages/components/Sidebar/Sidebar';
 import DashboardPage from "./pages/DashboardPage";
 import QuestionsPage from "./pages/QuestionsPage";
+import EmotionMusicPage from "./pages/components/EmotionMusicPage";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/emotionquiz" element={<EmotionQuiz />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/sidebar" element={<Sidebar />} />
+             <Route path="/emotion" element={<EmotionMusicPage />} />
         
        
       </Routes>

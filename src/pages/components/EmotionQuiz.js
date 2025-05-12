@@ -1149,17 +1149,17 @@ import { useNavigate } from "react-router-dom";
 const questions = [
   {
     id: 1,
-    text: "How has your day been so far?",
-    placeholder: "Tell me about your day...",
+    text: "What's your current mood like?",
+    placeholder: "Tell me about your mood...",
   },
   {
     id: 2,
-    text: "What's the one emoji that best describes your mood?",
-    placeholder: "Type or paste an emoji here...",
+    text: "How energized do you feel right now?",
+    placeholder: "Tell me how active you are...",
   },
   {
     id: 3,
-    text: "What's your current mindset like?",
+    text: "What thoughts are most influencing your mind at the moment?",
     placeholder: "Describe how you're feeling...",
   },
   {
@@ -1304,7 +1304,7 @@ export default function EmotionQuiz({ isDarkMode }) {
   const handleNext = () => {
     // Define what should happen when the "Next" button is clicked.
     // For example, you might want to navigate to the next part of your application.
-    navigate('/results');
+    navigate('/emotion');
   };
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
