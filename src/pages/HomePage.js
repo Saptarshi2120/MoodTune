@@ -176,7 +176,7 @@ const HomePage = () => {
 
         {/* Foreground Content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <h1 className={`text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r ${isDarkMode ? "from-purple-400 to-pink-400" : "from-purple-600 to-pink-600"}`}>
+          <h1 className={`text-5xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r ${isDarkMode ? "from-purple-400 to-pink-400" : "from-purple-600 to-pink-600"}`}>
             Let Us Find the Perfect Playlist for Your Mood!
           </h1>
 

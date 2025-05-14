@@ -234,12 +234,13 @@ const emotionTaglines = {
   surprise: "Whoa! Something unexpected, huh?",
   disgust: "Ugh! That’s unpleasant.",
   fear: "It’s okay to be scared sometimes.",
+  neutral: "Just a chill, regular moment.",
 };
 
 const EmotionMusicPage = () => {
   const [songs, setSongs] = useState([]);
   const [playlist, setPlaylist] = useState({});
-  const [emotion, setEmotion] = useState("joy"); // Optional: Set based on API if needed
+  const [emotion, setEmotion] = useState(""); // Optional: Set based on API if needed
 
   const email = "anonymous@11e45874x157ample.com"; // Replace with dynamic email or auth user
 // const id = 5;
@@ -267,9 +268,12 @@ useEffect(() => {
         });
       }
 
-      if (data.emotion) {
-        setEmotion(data.emotion);
-      }
+      // if (data.emotion) {
+      //   setEmotion(data.emotion);
+      // }
+      if (data.text_emotion) {
+          setEmotion(data.text_emotion.toLowerCase()); // ensure match with keys in emotionTaglines
+        }
 
     } catch (error) {
       console.error("Error fetching user emotions:", error);
@@ -303,9 +307,9 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen px-8 py-10 flex flex-col items-center relative overflow-hidden bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-      <video autoPlay loop muted className="absolute top-0 left-0 w-full h-full object-cover z-0">
+      {/* <video autoPlay loop muted className="absolute top-0 left-0 w-full h-full object-cover z-0">
         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-      </video>
+      </video>  */}
 
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60 z-0"></div>
 
@@ -339,7 +343,7 @@ useEffect(() => {
         </motion.p>
 
         <motion.h1
-          className="text-6xl font-extrabold text-white mb-6 drop-shadow-lg"
+          className="text-4xl font-extrabold text-white mb-6 drop-shadow-lg"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -347,7 +351,7 @@ useEffect(() => {
           Top 5 Song Recommendations
         </motion.h1>
 
-        <div className="w-full max-w-4xl space-y-6">
+        {/* <div className="w-full max-w-4xl space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {songs.slice(0, 3).map((song, index) => (
               <motion.div
@@ -393,10 +397,63 @@ useEffect(() => {
               </motion.div>
             ))}
           </div>
-        </div>
+        </div> */}
+        <div className="w-full max-w-4xl space-y-6">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    {songs.slice(0, 3).map((song, index) => (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.4, duration: 0.8 }}
+        className="text-center"
+      >
+        <a
+          href={song.play_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-2xl font-semibold text-white hover:text-purple-800 block mb-2"
+        >
+          {song.name}
+        </a>
+        <img
+          src={song.album_image_url}
+          alt={song.name}
+          className="w-40 h-40 object-cover rounded-lg shadow-md mx-auto"
+        />
+      </motion.div>
+    ))}
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {songs.slice(3).map((song, index) => (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: (index + 3) * 0.4, duration: 0.8 }}
+        className="text-center"
+      >
+        <a
+          href={song.play_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-2xl font-semibold text-white hover:text-purple-800 block mb-2"
+        >
+          {song.name}
+        </a>
+        <img
+          src={song.album_image_url}
+          alt={song.name}
+          className="w-40 h-40 object-cover rounded-lg shadow-md mx-auto"
+        />
+      </motion.div>
+    ))}
+  </div>
+</div>
 
         {/* Playlist & Album */}
-        {playlist.name && (
+        {/* {playlist.name && (
           <motion.div
             className="mt-12 w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-center gap-4 px-4"
             initial={{ opacity: 0, y: 20 }}
@@ -444,7 +501,54 @@ useEffect(() => {
               />
             </motion.div>
           </motion.div>
-        )}
+        )} */}
+
+        {playlist.name && (
+  <motion.div
+    className="mt-12 w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-center gap-4 px-4"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 2.5, duration: 1 }}
+  >
+    <div className="flex-1 text-center">
+      <h2 className="text-2xl font-bold text-green-700 mb-2">Playlist:</h2>
+      <motion.a
+        href={playlist.link}
+        target="_blank"
+        rel="noopener noreferrer"
+       className="text-xl font-bold text-white underline hover:text-purple-600"
+      >
+        {playlist.name}
+      </motion.a>
+      <motion.div
+        className="mt-4 text-lg font-semibold text-white-800"
+        initial={{ y: 0 }}
+        animate={{ y: [0, -10, 0] }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        🎶 Feel the rhythm, let's vibe!
+      </motion.div>
+    </div>
+
+    <motion.div
+      className="flex justify-center items-center flex-shrink-0"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <img
+        src={playlist.image}
+        alt="Album"
+        className="w-32 h-32 object-cover rounded-xl shadow-2xl border-4 border-purple-300 hover:scale-110 transition-transform duration-300"
+      />
+    </motion.div>
+  </motion.div>
+)}
+
       </div>
     </div>
   );

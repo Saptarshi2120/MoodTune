@@ -175,7 +175,7 @@ def get_responses():
 @app.post("/api/submit")
 async def submit_data(
     answers: str = Form(...),
-    image: UploadFile = File(...)
+    # image: UploadFile = File(...)
 ):
     try:
         print("📩 Incoming POST request")
@@ -198,17 +198,17 @@ async def submit_data(
         print("📝 Combined text:", combined_text)
 
         # 3. Save image to disk
-        UPLOAD_FOLDER = "uploads"
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-        file_ext = os.path.splitext(image.filename)[-1]
-        filename = f"webcam_{uuid4().hex}{file_ext}"
-        image_path = os.path.abspath(os.path.join(UPLOAD_FOLDER, filename))  # changed to absolute path
+        # UPLOAD_FOLDER = "uploads"
+        # os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        # file_ext = os.path.splitext(image.filename)[-1]
+        # filename = f"webcam_{uuid4().hex}{file_ext}"
+        # image_path = os.path.abspath(os.path.join(UPLOAD_FOLDER, filename))  # changed to absolute path
 
-        with open(image_path, "wb") as f:
-            content = await image.read()
-            f.write(content)
+        # with open(image_path, "wb") as f:
+        #     content = await image.read()
+        #     f.write(content)
 
-        print("📸 Image saved to:", image_path)
+        # print("📸 Image saved to:", image_path)
 
         # 4. Send to prediction API
         async with httpx.AsyncClient() as client:
@@ -217,7 +217,7 @@ async def submit_data(
                 "email": "anonymous@11e45874x157ample.com",
                 "text": combined_text,
                 "lang":language,
-                "image_path": image_path
+                # "image_path": image_path
             }
 
             print(f"📡 Sending data to prediction API at {url}")
@@ -381,8 +381,8 @@ async def submit_data(
 
 
     
-@app.get("/api/user-emotions/{email}")
-def get_user_emotions(email: str):
+# @app.get("/api/user-emotions/{email}")
+# def get_user_emotions(email: str):
     try:
         print("🔄 Starting process to fetch user emotions...")
         
@@ -460,7 +460,86 @@ def get_user_emotions(email: str):
         print("❌ Exception occurred:", e)
         conn.rollback()
         return {"error": f"Error fetching user emotions: {str(e)}"}
+@app.get("/api/user-emotions/{email}")
+def get_user_emotions(email: str):
+    try:
+        print("🔄 Starting process to fetch user emotions...")
+
+        query = """
+            SELECT 
+                song_1_name, song_1_link, song_1_image,
+                song_2_name, song_2_link, song_2_image,
+                song_3_name, song_3_link, song_3_image,
+                song_4_name, song_4_link, song_4_image,
+                song_5_name, song_5_link, song_5_image,
+                playlist_name, playlist_link, playlist_image,
+                text_emotion
+            FROM user_emotions
+            WHERE email = %s
+            ORDER BY timestamp DESC
+            LIMIT 1;
+        """
+
+        print("✅ SQL query prepared.")
+        cursor.execute(query, (email,))
+        print("✅ Query executed.")
+
+        row = cursor.fetchone()
+        print("✅ Data fetched from DB.")
+        print("🔎 Row content:", row)
+        print("🔎 Row length:", len(row))
+
+        if not row:
+            print("⚠️ No data found for this email.")
+            return {"message": "No data found for this email."}
+
+        print("✅ Formatting response...")
+
+        response = {
+           "songs": [
+            {
+                "name": row["song_1_name"],
+                "link": row["song_1_link"],
+                "image": row["song_1_image"]
+            },
+            {
+                "name": row["song_2_name"],
+                "link": row["song_2_link"],
+                "image": row["song_2_image"]
+            },
+            {
+                "name": row["song_3_name"],
+                "link": row["song_3_link"],
+                "image": row["song_3_image"]
+            },
+            {
+                "name": row["song_4_name"],
+                "link": row["song_4_link"],
+                "image": row["song_4_image"]
+            },
+            {
+                "name": row["song_5_name"],
+                "link": row["song_5_link"],
+                "image": row["song_5_image"]
+            }
+        ],
+        "playlist": {
+            "name": row["playlist_name"],
+            "link": row["playlist_link"],
+            "image": row["playlist_image"]
+        },
+            "text_emotion": row["text_emotion"]  # ✅ Include text emotion here
+        }
+
+        print("✅ Response ready.", response)
+        return response
+
+    except Exception as e:
+        print("❌ Exception occurred:", e)
+        conn.rollback()
+        return {"error": f"Error fetching user emotions: {str(e)}"}
 
     
 # if __name__ == "__main__":
 #     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+

@@ -6,7 +6,7 @@ try:
         host="localhost",
         database="mood",
         user="postgres",
-        password="2002",
+        password="2003",
         port=5432,
         cursor_factory=RealDictCursor
     )
