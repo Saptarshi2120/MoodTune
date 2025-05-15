@@ -325,7 +325,7 @@ useEffect(() => {
 
       <div className="relative z-10 flex flex-col items-center space-y-8">
         <motion.h2
-          className="text-5xl font-semibold text-white mb-4 italic drop-shadow-xl"
+          className="text-3xl font-semibold text-white mb-4 italic drop-shadow-xl"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -334,7 +334,7 @@ useEffect(() => {
         </motion.h2>
 
         <motion.p
-          className="text-2xl font-medium text-white text-center mb-8 max-w-2xl"
+           className="text-2xl font-medium text-green-300 text-center mb-8 max-w-2xl"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2 }}
@@ -342,14 +342,14 @@ useEffect(() => {
           Based on your current mood, here are the top 5 songs that we recommend to uplift your spirits! Enjoy the tunes 🎶.
         </motion.p>
 
-        <motion.h1
+        {/* <motion.h1
           className="text-4xl font-extrabold text-white mb-6 drop-shadow-lg"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
           Top 5 Song Recommendations
-        </motion.h1>
+        </motion.h1> */}
 
         {/* <div className="w-full max-w-4xl space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -1872,6 +1872,260 @@
 
 
 
+// import React, { useState, useEffect, useRef } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { ArrowLeft, Send } from "lucide-react";
+// import { useNavigate } from "react-router-dom";
+
+// const questions = [
+//   {
+//     id: 1,
+//     text: "What's your current mood like?",
+//     placeholder: "Tell me about your mood...",
+//   },
+//   {
+//     id: 2,
+//     text: "How energized do you feel right now?",
+//     placeholder: "Tell me how active you are...",
+//   },
+//   {
+//     id: 3,
+//     text: "What thoughts are most influencing your mind at the moment?",
+//     placeholder: "Describe how you're feeling...",
+//   },
+//   {
+//     id: 4,
+//     text: "What is your preferred language for songs?",
+//     placeholder: "Enter your preferred language...",
+//   },
+// ];
+
+// export default function EmotionQuiz({ isDarkMode }) {
+//   const navigate = useNavigate();
+//   const [currentQuestion, setCurrentQuestion] = useState(0);
+//   const [answers, setAnswers] = useState({});
+//   const [currentInput, setCurrentInput] = useState("");
+//   const inputRef = useRef(null);
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const [isCompleted, setIsCompleted] = useState(false); // ✅ New state to track completion
+
+//   useEffect(() => {
+//     const timer = setTimeout(() => {
+//       inputRef.current?.focus();
+//     }, 500);
+//     return () => clearTimeout(timer);
+//   }, [currentQuestion]);
+
+//   const handleAnswer = async () => {
+//     if (!currentInput.trim()) {
+//       alert("Please enter a valid response.");
+//       return;
+//     }
+
+//     const updatedAnswers = {
+//       ...answers,
+//       [questions[currentQuestion].text]: currentInput,
+//     };
+//     setAnswers(updatedAnswers);
+//     setCurrentInput("");
+
+//     if (currentQuestion < questions.length - 1) {
+//       setTimeout(() => setCurrentQuestion((prev) => prev + 1), 300);
+//     } else {
+//       await submitAnswers(updatedAnswers);
+//     }
+//   };
+
+//   const submitAnswers = async (finalAnswers) => {
+//     try {
+//       setIsSubmitting(true);
+//       const formData = new FormData();
+//       formData.append("answers", JSON.stringify(finalAnswers));
+
+//       const response = await fetch("http://localhost:8000/api/submit", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       if (!response.ok) {
+//         const error = await response.json();
+//         alert("Submission failed: " + error?.error || "Unknown error");
+//         return;
+//       }
+
+//       const result = await response.json();
+//       console.log("✅ Submission result:", result);
+//       setIsCompleted(true); // ✅ Mark as completed
+//     } catch (error) {
+//       console.error("❌ Submission error:", error);
+//       alert("Failed to submit answers. Please try again.");
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
+
+//   const handleKeyPress = (e) => {
+//     if (e.key === "Enter" && !e.shiftKey) {
+//       e.preventDefault();
+//       handleAnswer();
+//     }
+//   };
+
+//   const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+//   const getClassName = (...classes) => {
+//     return classes.filter(Boolean).join(" ");
+//   };
+
+//   return (
+//     <div
+//       className={getClassName(
+//         "min-h-screen transition-all duration-500",
+//         isDarkMode
+//           ? "bg-gray-900"
+//           : "bg-gradient-to-br from-pink-100 to-purple-200"
+//       )}
+//     >
+//       {/* Progress Bar */}
+//       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+//         <motion.div
+//           className="h-full bg-purple-600"
+//           initial={{ width: 0 }}
+//           animate={{ width: `${progress}%` }}
+//           transition={{ duration: 0.5 }}
+//         />
+//       </div>
+
+//       <div className="max-w-2xl mx-auto pt-16 pb-24 px-4 relative z-10">
+//         {/* Back Button */}
+//         <button
+//           onClick={() => navigate("/")}
+//           className="fixed bottom-4 left-4 px-6 py-3 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition-colors z-50"
+//         >
+//           <ArrowLeft className="mr-2 w-5 h-5 inline" />
+//           Back to Homepage
+//         </button>
+
+//         {/* Question UI */}
+//         <AnimatePresence mode="wait">
+//           <motion.div
+//             key={questions[currentQuestion].id}
+//             initial={{ opacity: 0, x: 50 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             exit={{ opacity: 0, x: -50 }}
+//             transition={{ duration: 0.5 }}
+//             className="mb-8"
+//           >
+//             <div className="flex mb-4">
+//               <div className="max-w-[80%] bg-purple-600 text-white px-6 py-3 rounded-2xl rounded-tl-none">
+//                 {questions[currentQuestion].text}
+//               </div>
+//             </div>
+
+//             <div className="flex gap-2">
+//               <input
+//                 ref={inputRef}
+//                 type="text"
+//                 value={currentInput}
+//                 onChange={(e) => setCurrentInput(e.target.value)}
+//                 onKeyDown={handleKeyPress}
+//                 placeholder={questions[currentQuestion].placeholder}
+//                 className="flex-1 px-4 py-2 rounded-xl bg-white/10 text-black placeholder:text-gray-400"
+//               />
+//               <button
+//                 onClick={handleAnswer}
+//                 className="p-2 rounded-xl bg-purple-600 text-black"
+//                 disabled={isSubmitting}
+//               >
+//                 <Send className="w-5 h-5" />
+//               </button>
+//             </div>
+
+//             <div className="mt-6 text-sm text-gray-600 text-center">
+//               <p>✨ Your thoughts matter — share freely and honestly!</p>
+
+//               <motion.div
+//                 className="flex justify-center gap-6 mt-4"
+//                 initial={{ opacity: 0, y: 10 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ duration: 1 }}
+//               >
+//                 <motion.div
+//                   className="p-3 bg-purple-100 rounded-full shadow-lg"
+//                   animate={{ scale: [1, 1.1, 1], y: [0, -3, 0] }}
+//                   transition={{
+//                     repeat: Infinity,
+//                     duration: 2,
+//                     ease: "easeInOut",
+//                   }}
+//                 >
+//                   <span role="img" aria-label="lock" className="text-purple-600 text-2xl">
+//                     🔒
+//                   </span>
+//                 </motion.div>
+
+//                 <motion.div
+//                   className="p-3 bg-yellow-100 rounded-full shadow-lg"
+//                   animate={{ scale: [1, 1.1, 1], y: [0, 3, 0] }}
+//                   transition={{
+//                     repeat: Infinity,
+//                     duration: 2,
+//                     ease: "easeInOut",
+//                     delay: 1,
+//                   }}
+//                 >
+//                   <span role="img" aria-label="sparkles" className="text-yellow-500 text-2xl">
+//                     ✨
+//                   </span>
+//                 </motion.div>
+//               </motion.div>
+
+//               <p className="mt-2 text-xs text-gray-500">
+//                 Your honest answers will help us better understand your mood and personalize your experience.
+//                 <br />
+//                 Don’t worry — your data stays safe and private ✨
+//               </p>
+//             </div>
+//           </motion.div>
+//         </AnimatePresence>
+
+//         {/* ✅ Explore Songs Button after submission */}
+//         {isCompleted && (
+//           <div className="mt-10 flex justify-center">
+//             <button
+//               onClick={() => navigate("/emotion")}
+//               className="px-6 py-3 rounded-full bg-pink-500 text-white font-semibold hover:bg-pink-600 transition-colors shadow-lg"
+//             >
+//               🎵 Explore Songs
+//             </button>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Bottom Equalizer Animation */}
+//       <div className="absolute bottom-0 left-0 w-full flex justify-center gap-1 pb-4 pointer-events-none z-0">
+//         {Array.from({ length: 30 }).map((_, index) => (
+//           <motion.div
+//             key={index}
+//             className="w-1 md:w-1.5 bg-gradient-to-t from-pink-400 via-purple-500 to-indigo-500 rounded-full"
+//             initial={{ height: "0.5rem" }}
+//             animate={{ height: ["0.5rem", "2rem", "0.8rem", "1.5rem", "1rem"] }}
+//             transition={{
+//               duration: 1.5,
+//               repeat: Infinity,
+//               repeatType: "mirror",
+//               delay: index * 0.1,
+//               ease: "easeInOut",
+//             }}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Send } from "lucide-react";
@@ -1907,7 +2161,7 @@ export default function EmotionQuiz({ isDarkMode }) {
   const [currentInput, setCurrentInput] = useState("");
   const inputRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false); // ✅ New state to track completion
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -1949,13 +2203,13 @@ export default function EmotionQuiz({ isDarkMode }) {
 
       if (!response.ok) {
         const error = await response.json();
-        alert("Submission failed: " + error?.error || "Unknown error");
+        alert("Submission failed: " + (error?.error || "Unknown error"));
         return;
       }
 
       const result = await response.json();
       console.log("✅ Submission result:", result);
-      setIsCompleted(true); // ✅ Mark as completed
+      setIsCompleted(true);
     } catch (error) {
       console.error("❌ Submission error:", error);
       alert("Failed to submit answers. Please try again.");
@@ -2089,8 +2343,18 @@ export default function EmotionQuiz({ isDarkMode }) {
           </motion.div>
         </AnimatePresence>
 
-        {/* ✅ Explore Songs Button after submission */}
-        {isCompleted && (
+        {/* Loader shown after last question is answered */}
+        {isSubmitting && (
+          <div className="flex flex-col items-center mt-12">
+            <div className="loader mb-4 animate-spin rounded-full h-10 w-10 border-t-4 border-purple-500 border-opacity-75"></div>
+            <p className="text-purple-700 text-lg font-medium">
+              Finding best playlist for your mood...
+            </p>
+          </div>
+        )}
+
+        {/* Explore Songs Button after submission */}
+        {isCompleted && !isSubmitting && (
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => navigate("/emotion")}
@@ -2123,6 +2387,7 @@ export default function EmotionQuiz({ isDarkMode }) {
     </div>
   );
 }
+
 
 
 
