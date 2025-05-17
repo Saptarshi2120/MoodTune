@@ -196,12 +196,15 @@ const HomePage = () => {
               You feel! We care, because caring isn’t optional — it’s our core.
             </h2>
             <div className="flex justify-center gap-6">
-              <button className="text-4xl hover:scale-125 transition-transform">😊</button>
-              <button className="text-4xl hover:scale-125 transition-transform">😢</button>
-              <button className="text-4xl hover:scale-125 transition-transform">😡</button>
-              <button className="text-4xl hover:scale-125 transition-transform">😲</button>
-              <button className="text-4xl hover:scale-125 transition-transform">😱</button>
-              <button className="text-4xl hover:scale-125 transition-transform">🤢</button>
+              <button className="text-4xl hover:scale-125 transition-transform" title="Delightful">🥰</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Joy">😂</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Happy">😊</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Surprised">😲</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Neutral">😐</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Sadness">😢</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Fear">😱</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Anger">😡</button>
+  <button className="text-4xl hover:scale-125 transition-transform" title="Disgust">🤢</button>
             </div>
           </div>
         </div>
