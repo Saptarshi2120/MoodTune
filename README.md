@@ -2,7 +2,7 @@
 
 MoodTune is a real-time, AI-powered music recommendation system that personalizes playlists based on the user’s emotional and sentimental state. It combines text analysis (emotion + sentiment), LLM-powered queries, and the Spotify API to deliver tracks that match how you're feeling.
 
-![MoodTune Workflow](./assets/Moodtune-Flowchart.png)
+
 
 ---
 
