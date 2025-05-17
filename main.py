@@ -558,25 +558,201 @@ Example styles:
     return response.text.strip()
 
 # --- API Endpoint ---
+# @app.post("/predict/")
+# async def predict(email: str = Form(...), text: str = Form(...),lang: str = Form(...)):
+#     db = SessionLocal()
+#     try:
+#         # Predict emotion from text
+#         print("🧠 Predicting emotion from text...")
+#         text_result = text_classifier(text)[0]
+#         text_emotion = text_result['label'].lower()
+#         text_confidence = round(text_result['score'] * 100, 2)
+#         final_emotion = text_emotion
+#         print(f"📝 Text Emotion: {text_emotion} ({text_confidence}%)")
+
+#         print("🧠 Predicting sentiment from text...")
+#         text_sentiment_result = sentiment_classifier(text)[0]
+#         text_sentiment = text_sentiment_result['label'].lower()
+#         text_sentiment_confidence = round(text_sentiment_result['score'] * 100, 2)
+#         # final_sentiment = text_emotion
+#         print(f"📝 Text sentiment: {text_sentiment} ({text_sentiment_confidence}%)")
+#         positive_emotions = ['joy', 'surprise']
+#         negative_emotions = ['fear', 'anger', 'disgust', 'sadness']
+#         neutral_emotions = ['neutral']
+
+#         if text_emotion in positive_emotions:
+#             emotion_category = 'pos'
+#         elif text_emotion in negative_emotions:
+#             emotion_category = 'neg'
+#         else:
+#             emotion_category = 'neu'
+
+#         if text_sentiment == 'positive':
+#             sentiment_category = 'pos'
+#         elif text_sentiment == 'negative':
+#             sentiment_category = 'neg'
+#         else:
+#             sentiment_category = 'neu'
+
+#         # Weighted score combination
+#         scores = {
+#             'pos': 0,
+#             'neg': 0,
+#             'neu': 0
+#         }
+#         scores[emotion_category] += 0.6 * text_confidence
+#         scores[sentiment_category] += 0.4 * text_sentiment_confidence
+
+#         # --- Emotion-Sentiment Mapping ---
+#         emotion_sentiment_matrix = {
+#         "anger": {
+#             "neg": "Rage",
+#             "neu": "Anger",
+#             "pos": "Irritation"
+#         },
+#         "disgust": {
+#             "neg": "Revulsion",
+#             "neu": "Disgust",
+#             "pos": "Dislike"
+#         },
+#         "fear": {
+#             "neg": "Terror",
+#             "neu": "Fear",
+#             "pos": "Apprehension"
+#         },
+#         "joy": {
+#             "neg": "Bittersweet",
+#             "neu": "Joy",
+#             "pos": "Happiness"
+#         },
+#         "neutral": {
+#             "neg": "Indifference",
+#             "neu": "Neutral",
+#             "pos": "Calm"
+#         },
+#         "sadness": {
+#             "neg": "Despair",
+#             "neu": "Sadness",
+#             "pos": "Melancholy Hope"
+#         },
+#         "surprise": {
+#             "neg": "Shock",
+#             "neu": "Surprise",
+#             "pos": "Delight"
+#         }
+#         }
+#         final_sentiment = max(scores, key=scores.get)
+#         print(f"🔀 Final Sentiment (Weighted): {final_sentiment}")
+
+#         final_emotion = emotion_sentiment_matrix.get(text_emotion, {}).get(final_sentiment, text_emotion)
+#         print(f"🎯 Final Emotion (Mapped): {final_emotion}")
+
+#         # Spotify search
+#         query = generate_spotify_search_query(final_emotion,lang)
+#         spotify = get_spotify_client()
+#         search_results = spotify.search(q=query, type="track", limit=5)
+#         tracks = search_results.get('tracks', {}).get('items', [])
+
+#         songs = [{
+#             "name": t.get("name"),
+#             "artist": t["artists"][0].get("name"),
+#             "url": t.get("external_urls", {}).get("spotify"),
+#             "album_image": t.get("album", {}).get("images", [{}])[0].get("url"),
+#             "duration": format_duration(t.get("duration_ms", 0))
+#         } for t in tracks]
+
+#         # Playlist
+#         playlist_search = spotify.search(q=f"{lang} playlist", type="playlist", limit=1)
+#         playlists = playlist_search.get('playlists', {}).get('items', [])
+#         playlist = None
+#         if playlists:
+#             p = playlists[0]
+#             playlist = {
+#                 "name": p.get("name"),
+#                 "url": p.get("external_urls", {}).get("spotify"),
+#                 "image": p.get("images", [{}])[0].get("url")
+#             }
+
+#         # Save to DB
+#         entry = UserEmotion(
+#             email=email,
+#             combined_text=text,
+#             text_emotion=text_emotion,
+#             text_sentiment=final_sentiment,
+#             final_emotion=final_emotion,
+#             song_1_name=songs[0]["name"] if len(songs) > 0 else None,
+#             song_1_artist=songs[0]["artist"] if len(songs) > 0 else None,
+#             song_1_link=songs[0]["url"] if len(songs) > 0 else None,
+#             song_1_duration=songs[0]["duration"] if len(songs) > 0 else None,
+#             song_1_image=songs[0]["album_image"] if len(songs) > 0 else None,
+#             song_2_name=songs[1]["name"] if len(songs) > 1 else None,
+#             song_2_artist=songs[1]["artist"] if len(songs) > 1 else None,
+#             song_2_link=songs[1]["url"] if len(songs) > 1 else None,
+#             song_2_duration=songs[1]["duration"] if len(songs) > 1 else None,
+#             song_2_image=songs[1]["album_image"] if len(songs) > 1 else None,
+#             song_3_name=songs[2]["name"] if len(songs) > 2 else None,
+#             song_3_artist=songs[2]["artist"] if len(songs) > 2 else None,
+#             song_3_link=songs[2]["url"] if len(songs) > 2 else None,
+#             song_3_duration=songs[2]["duration"] if len(songs) > 2 else None,
+#             song_3_image=songs[2]["album_image"] if len(songs) > 2 else None,
+#             song_4_name=songs[3]["name"] if len(songs) > 3 else None,
+#             song_4_artist=songs[3]["artist"] if len(songs) > 3 else None,
+#             song_4_link=songs[3]["url"] if len(songs) > 3 else None,
+#             song_4_duration=songs[3]["duration"] if len(songs) > 3 else None,
+#             song_4_image=songs[3]["album_image"] if len(songs) > 3 else None,
+#             song_5_name=songs[4]["name"] if len(songs) > 4 else None,
+#             song_5_artist=songs[4]["artist"] if len(songs) > 4 else None,
+#             song_5_link=songs[4]["url"] if len(songs) > 4 else None,
+#             song_5_duration=songs[4]["duration"] if len(songs) > 4 else None,
+#             song_5_image=songs[4]["album_image"] if len(songs) > 4 else None,
+#             playlist_name=playlist["name"] if playlist else None,
+#             playlist_link=playlist["url"] if playlist else None,
+#             playlist_image=playlist["image"] if playlist else None
+#         )
+
+#         db.add(entry)
+#         db.commit()
+
+#         return {"final_emotion": final_emotion, "songs": songs, "playlist": playlist}
+#     except Exception as e:
+#         db.rollback()
+#         return {"error": str(e)}
+#     finally:
+#         db.close()
+
+
 @app.post("/predict/")
-async def predict(email: str = Form(...), text: str = Form(...),lang: str = Form(...)):
+async def predict(email: str = Form(...), text: str = Form(...), lang: str = Form(...)):
     db = SessionLocal()
     try:
         # Predict emotion from text
         print("🧠 Predicting emotion from text...")
         text_result = text_classifier(text)[0]
-        text_emotion = text_result['label'].lower()
-        text_confidence = round(text_result['score'] * 100, 2)
-        final_emotion = text_emotion
-        print(f"📝 Text Emotion: {text_emotion} ({text_confidence}%)")
+        raw_emotion = text_result['label'].lower()
+        confidence = round(text_result['score'] * 100, 2)
 
+        # 🎯 Remap "joy" into specific categories based on confidence
+        if raw_emotion == "joy":
+            if confidence < 80:
+                text_emotion = "happy"
+            elif 80 <= confidence <= 90:
+                text_emotion = "joy"
+            else:
+                text_emotion = "delightful"
+        else:
+            text_emotion = raw_emotion
+
+        print(f"📝 Text Emotion (mapped): {text_emotion} ({confidence}%)")
+
+        # Predict sentiment from text
         print("🧠 Predicting sentiment from text...")
-        text_sentiment_result = sentiment_classifier(text)[0]
-        text_sentiment = text_sentiment_result['label'].lower()
-        text_sentiment_confidence = round(text_sentiment_result['score'] * 100, 2)
-        # final_sentiment = text_emotion
-        print(f"📝 Text sentiment: {text_sentiment} ({text_sentiment_confidence}%)")
-        positive_emotions = ['joy', 'surprise']
+        sentiment_result = sentiment_classifier(text)[0]
+        text_sentiment = sentiment_result['label'].lower()
+        sentiment_confidence = round(sentiment_result['score'] * 100, 2)
+        print(f"📝 Text Sentiment: {text_sentiment} ({sentiment_confidence}%)")
+
+        # Emotion categories
+        positive_emotions = ['happy', 'joy', 'delightful', 'surprise']
         negative_emotions = ['fear', 'anger', 'disgust', 'sadness']
         neutral_emotions = ['neutral']
 
@@ -595,60 +771,67 @@ async def predict(email: str = Form(...), text: str = Form(...),lang: str = Form
             sentiment_category = 'neu'
 
         # Weighted score combination
-        scores = {
-            'pos': 0,
-            'neg': 0,
-            'neu': 0
-        }
-        scores[emotion_category] += 0.6 * text_confidence
-        scores[sentiment_category] += 0.4 * text_sentiment_confidence
+        scores = {'pos': 0, 'neg': 0, 'neu': 0}
+        scores[emotion_category] += 0.6 * confidence
+        scores[sentiment_category] += 0.4 * sentiment_confidence
+        final_sentiment = max(scores, key=scores.get)
+
+        print(f"🔀 Final Sentiment (Weighted): {final_sentiment}")
 
         # --- Emotion-Sentiment Mapping ---
         emotion_sentiment_matrix = {
-        "anger": {
-            "neg": "Rage",
-            "neu": "Anger",
-            "pos": "Irritation"
-        },
-        "disgust": {
-            "neg": "Revulsion",
-            "neu": "Disgust",
-            "pos": "Dislike"
-        },
-        "fear": {
-            "neg": "Terror",
-            "neu": "Fear",
-            "pos": "Apprehension"
-        },
-        "joy": {
-            "neg": "Bittersweet",
-            "neu": "Joy",
-            "pos": "Happiness"
-        },
-        "neutral": {
-            "neg": "Indifference",
-            "neu": "Neutral",
-            "pos": "Calm"
-        },
-        "sadness": {
-            "neg": "Despair",
-            "neu": "Sadness",
-            "pos": "Melancholy Hope"
-        },
-        "surprise": {
-            "neg": "Shock",
-            "neu": "Surprise",
-            "pos": "Delight"
+            "anger": {
+                "neg": "High Anger",
+                "neu": "Anger",
+                "pos": "Low Anger"
+            },
+            "disgust": {
+                "neg": "highly disgust",
+                "neu": "Disgust",
+                "pos": "Mild disgust"
+            },
+            "fear": {
+                "neg": "Extremely Feared",
+                "neu": "Fear",
+                "pos": "Slightly Feared"
+            },
+            "happy": {
+                "neg": "Slightly happy",
+                "neu": "Happy",
+                "pos": "Extremely Happy"
+            },
+            "joy": {
+                "neg": "Mild Joy",
+                "neu": "Joy",
+                "pos": "Extreme Joy"
+            },
+            "delightful": {
+                "neg": "Slight delight",
+                "neu": "Delightful",
+                "pos": "Extreme delight"
+            },
+            "neutral": {
+                "neg": "Indifference",
+                "neu": "Neutral",
+                "pos": "Calm"
+            },
+            "sadness": {
+                "neg": "Despair",
+                "neu": "Sadness",
+                "pos": "Slightly Sad"
+            },
+            "surprise": {
+                "neg": "Shock",
+                "neu": "Surprise",
+                "pos": "Astonish"
+            }
         }
-        }
-        final_sentiment = max(scores, key=scores.get)
-        print(f"🔀 Final Sentiment (Weighted): {final_sentiment}")
 
         final_emotion = emotion_sentiment_matrix.get(text_emotion, {}).get(final_sentiment, text_emotion)
         print(f"🎯 Final Emotion (Mapped): {final_emotion}")
 
         # Spotify search
-        query = generate_spotify_search_query(final_emotion,lang)
+        query = generate_spotify_search_query(final_emotion, lang)
         spotify = get_spotify_client()
         search_results = spotify.search(q=query, type="track", limit=5)
         tracks = search_results.get('tracks', {}).get('items', [])
@@ -713,12 +896,19 @@ async def predict(email: str = Form(...), text: str = Form(...),lang: str = Form
         db.add(entry)
         db.commit()
 
-        return {"final_emotion": final_emotion, "songs": songs, "playlist": playlist}
+        return {
+            "final_emotion": final_emotion,
+            "songs": songs,
+            "playlist": playlist
+        }
+
     except Exception as e:
         db.rollback()
         return {"error": str(e)}
+
     finally:
         db.close()
+
 
 
 
