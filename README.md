@@ -1,79 +1,122 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Getting Started with Create React App
+# 🎧 MoodTune – Emotion-Based Music Recommender
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MoodTune is a real-time, AI-powered music recommendation system that personalizes playlists based on the user’s emotional and sentimental state. It combines text analysis (emotion + sentiment), LLM-powered queries, and the Spotify API to deliver tracks that match how you're feeling.
 
-## Available Scripts
+![MoodTune Workflow](./assets/Moodtune-Flowchart.png)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 🔐 **Secure Gmail OAuth** login for user authentication  
+- 🧠 **Emotion + Sentiment Analysis** using NLP models (e.g., BERT, TextBlob)  
+- 📊 **Mood Matrix** generation with weighted scoring (7×3 matrix)  
+- 💡 **LLM-based Prompting** via Gemini for context-aware Spotify queries  
+- 🎵 **Spotify API Integration** for fetching tracks and metadata  
+- 🗃️ **PostgreSQL Database** for scalable song metadata and user info storage  
+- 💻 **Modern React Frontend** with album art, audio previews, and personalized playlists  
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠️ Project Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+MoodTune/
+├── frontend/                  # React frontend for UI and playlist display
+├── emotion-song-backend/      # FastAPI backend (OAuth, emotion/sentiment analysis, playlist logic)
+│   └── server.py
+├── main.py                   # Secondary FastAPI app (advanced LLM or services)
+├── postgres/                 # PostgreSQL database schema and migration scripts
+└── assets/                   # Images and assets (e.g., workflow diagram)
+```
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🧪 How It Works (Workflow Summary)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Login via Gmail OAuth**  
+   Secure user authentication and session management.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **User Input**  
+   User answers mood-related questions and specifies song language preferences.
 
-### `npm run eject`
+3. **Backend Processing**  
+   FastAPI backend performs NLP emotion and sentiment analysis on input data.  
+   Generates a weighted 7×3 Mood Matrix.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. **Query Generation**  
+   Gemini LLM crafts a context-aware prompt aligned with the user’s mood.  
+   Spotify API is queried using this prompt to fetch matching tracks.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+5. **Database Storage**  
+   Songs, moods, and user info are stored in PostgreSQL for persistence and scalability.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+6. **Frontend Delivery**  
+   React dashboard displays personalized playlists with album art and audio previews.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🖥️ Getting Started: How to Run the Project
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Clone the repository
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+git clone https://github.com/Saptarshi2120/MoodTune.git
+cd MoodTune
+```
 
-### Code Splitting
+### 2. Run the Frontend (React)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+cd frontend
+npm install
+npm start
+```
 
-### Analyzing the Bundle Size
+- The frontend UI will be available at: [http://localhost:3000](http://localhost:3000)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### 3. Run the Backend API (Emotion & Spotify Handling)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Open a new terminal:
 
-### Advanced Configuration
+```bash
+cd MoodTune/emotion-song-backend
+uvicorn server:app --reload
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- The backend server will run at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 4. Run the Additional Backend (LLM-related Services)
 
-### `npm run build` fails to minify
+Open another terminal:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# moodtune
-final sem project
->>>>>>> bb2d755d83405aaee338cb03f84ccf6bd8f56289
-=======
-# Moodtune
->>>>>>> 3969551c4072ec35b9ec0bf9a86cf45019045d85
+```bash
+cd MoodTune
+uvicorn main:app --host 127.0.0.1 --port 9000 --reload
+```
+
+- Secondary backend available at: [http://127.0.0.1:9000](http://127.0.0.1:9000)
+
+---
+
+## ✅ Requirements
+
+- Node.js (for React frontend)  
+- Python 3.8+  
+- FastAPI  
+- Uvicorn  
+- PostgreSQL  
+- TextBlob or BERT-based transformer models  
+- Gemini LLM access (or mock for local development)  
+- Spotify API credentials  
+
+---
+
+## 📬 Contact
+
+Made with ❤️ by Saptarshi2120  
+For issues or suggestions, feel free to open an issue on the GitHub repository.
