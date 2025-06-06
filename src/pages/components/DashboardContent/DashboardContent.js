@@ -1,46 +1,111 @@
-/*import React from 'react';
+import React, { useEffect, useState } from 'react';
 import UserStats from './UserStats';
 import SongRepetition from './SongRepetition';
 import UserMoodChart from './UserMoodChart';
-import ListeningMinutesChart from './ListeningMinutesChart'; // ✅ Only chart we keep
+import ListeningMinutesChart from './ListeningMinutesChart';
+import SkeletonLoader from './SkeletonLoader'; // Make sure this is imported
 import './DashboardContent.css';
 
-
 function DashboardContent() {
-  const dailyListeningHours = 4;
-  const last30DaysListeningHours = 128;
+  const [dailyListeningHours, setDailyListeningHours] = useState(null);
+  const [last30DaysListeningHours, setLast30DaysListeningHours] = useState(null);
+  const [dailySongRepetitions, setDailySongRepetitions] = useState([]);
+  const [emotionCounts, setEmotionCounts] = useState({});
+  const [listeningMinutesData, setListeningMinutesData] = useState([]);
 
-  const listeningMinutesData = [
-    { day: 'Mon', minutes: 20 },
-    { day: 'Tue', minutes: 40 },
-    { day: 'Wed', minutes: 10 },
-    { day: 'Thu', minutes: 50 },
-    { day: 'Fri', minutes: 35 },
-    { day: 'Sat', minutes: 64 },
-    { day: 'Sun', minutes: 55 },
-  ];
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDataReady, setIsDataReady] = useState(false);
 
-  const dailySongRepetitions = [
-    { song: 'Song A', count: 12 },
-    { song: 'Song B', count: 6 },
-    { song: 'Song C', count: 15 },
-    { song: 'Song D', count: 4 },
-  ];
+  const email = "anonymous@11e45874x157ample.com";
 
-  const moodData = {
-    Mon: { happy: 15, sad: 2, angry: 1, cry: 0, joy: 3 },
-    Tue: { happy: 18, sad: 1, angry: 0, cry: 1, joy: 5 },
-    Wed: { happy: 20, sad: 0, angry: 0, cry: 2, joy: 2 },
-    Thu: { happy: 16, sad: 3, angry: 1, cry: 0, joy: 4 },
-    Fri: { happy: 22, sad: 1, angry: 0, cry: 0, joy: 3 },
-    Sat: { happy: 25, sad: 0, angry: 0, cry: 1, joy: 5 },
-    Sun: { happy: 20, sad: 2, angry: 1, cry: 0, joy: 2 },
+  const parseDurationToSeconds = (durationStr) => {
+    if (!durationStr || !/^\d+:\d+$/.test(durationStr)) return 0;
+    const [min, sec] = durationStr.split(':').map(Number);
+    return (min * 60) + sec;
   };
 
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
+      setIsDataReady(false);
+
+      try {
+        const [
+          durationsRes,
+          repetitionsRes,
+          emotionsRes,
+          weeklyListeningRes
+        ] = await Promise.all([
+          fetch(`http://localhost:8000/api/song-durations-summary/${email}`),
+          fetch(`http://localhost:8000/api/last-songs-with-durations/${email}`),
+          fetch(`http://localhost:8000/api/emotions/${email}`),
+          fetch(`http://localhost:8000/api/weekly-listening-minutes/${email}`)
+        ]);
+
+        const durations = await durationsRes.json();
+        const repetitions = await repetitionsRes.json();
+        const emotions = await emotionsRes.json();
+        const weekly = await weeklyListeningRes.json();
+
+        // 🎧 Durations
+        setDailyListeningHours(durations.total_duration_last_entry?.formatted || "Error");
+        setLast30DaysListeningHours(durations.total_duration_all_entries?.formatted || "Error");
+
+        // 🔁 Song Repetitions
+        if (repetitions.songs) {
+          const parsedSongs = repetitions.songs.map(song => ({
+            song: song.name,
+            durationSeconds: parseDurationToSeconds(song.duration),
+          }));
+
+          const maxDuration = Math.max(...parsedSongs.map(item => item.durationSeconds), 60);
+
+          const formatted = parsedSongs.map(item => ({
+            ...item,
+            heightPercent: (item.durationSeconds / maxDuration) * 90 + 10
+          }));
+
+          setDailySongRepetitions(formatted);
+        }
+
+        // 😊 Emotions
+        setEmotionCounts(emotions.emotion_counts || {});
+
+        // ⏱️ Weekly Listening Data
+        if (Array.isArray(weekly)) {
+          setListeningMinutesData(weekly);
+        } else {
+          setListeningMinutesData([]);
+        }
+
+        // ✅ After ALL data is fetched and states are updated
+        setIsDataReady(true);
+
+      } catch (error) {
+        console.error("❌ Error loading dashboard data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, []);
+
+  // 👉 Show Skeleton Loader until ALL data ready
+  if (isLoading || !isDataReady) {
+    return (
+      <div className="dashboard-content">
+        <h1>MoodTunes Dashboard</h1>
+        <SkeletonLoader height="600px" />
+      </div>
+    );
+  }
+
+  // 👉 Once data is ready, show full dashboard
   return (
     <div className="dashboard-content">
       <h1>MoodTunes Dashboard</h1>
-  
+
       <div className="top-row horizontal">
         <UserStats
           dailyListeningHours={dailyListeningHours}
@@ -48,76 +113,15 @@ function DashboardContent() {
         />
         <ListeningMinutesChart listeningMinutesData={listeningMinutesData} />
       </div>
-  
+
       <div className="bottom-row">
         <SongRepetition dailySongRepetitions={dailySongRepetitions} />
-        <UserMoodChart moodData={moodData} />
+        <div>
+          <UserMoodChart emotionCounts={emotionCounts} />
+        </div>
       </div>
     </div>
   );
 }
-<<<<<<< HEAD
-export default DashboardContent;
-=======
 
-export default DashboardContent;*/
-// src/pages/components/DashboardContent/DashboardContent.js
-
-import React from 'react';
-import UserStats from './UserStats';
-import SongRepetition from './SongRepetition';
-import UserMoodChart from './UserMoodChart';
-import ListeningMinutesChart from './ListeningMinutesChart'; // ✅ Only chart we keep
-import './DashboardContent.css';
-
-function DashboardContent() {
-  const dailyListeningHours = 4;
-  const last30DaysListeningHours = 128;
-
-  const listeningMinutesData = [
-    { day: 'Mon', minutes: 20 },
-    { day: 'Tue', minutes: 40 },
-    { day: 'Wed', minutes: 10 },
-    { day: 'Thu', minutes: 50 },
-    { day: 'Fri', minutes: 35 },
-    { day: 'Sat', minutes: 64 },
-    { day: 'Sun', minutes: 55 },
-  ];
-
-  const dailySongRepetitions = [
-    { song: 'Song A', count: 12 },
-    { song: 'Song B', count: 6 },
-    { song: 'Song C', count: 15 },
-    { song: 'Song D', count: 4 },
-  ];
-
-  const moodData = {
-    Mon: { happy: 15, sad: 2, angry: 1, cry: 0, joy: 3 },
-    Tue: { happy: 18, sad: 1, angry: 0, cry: 1, joy: 5 },
-    Wed: { happy: 20, sad: 0, angry: 0, cry: 2, joy: 2 },
-    Thu: { happy: 16, sad: 3, angry: 1, cry: 0, joy: 4 },
-    Fri: { happy: 22, sad: 1, angry: 0, cry: 0, joy: 3 },
-    Sat: { happy: 25, sad: 0, angry: 0, cry: 1, joy: 5 },
-    Sun: { happy: 20, sad: 2, angry: 1, cry: 0, joy: 2 },
-  };
-
-  return (
-    <div className="dashboard-content">
-      <h1>MoodTunes Dashboard</h1>
-  
-      <div className="top-row horizontal">
-        <UserStats
-          dailyListeningHours={dailyListeningHours}
-          last30DaysListeningHours={last30DaysListeningHours}
-        />
-        <ListeningMinutesChart listeningMinutesData={listeningMinutesData} />
-      </div>
-  
-      <div className="bottom-row">
-        <SongRepetition dailySongRepetitions={dailySongRepetitions} />
-        <UserMoodChart moodData={moodData} />
-      </div>
-    </div>
-  );
-}
 export default DashboardContent;

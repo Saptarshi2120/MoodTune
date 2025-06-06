@@ -267,6 +267,29 @@ async def submit_data(
         print("❌ Exception:", str(e))
         return {"error": f"Unexpected error: {str(e)}"}
 
+@app.get("/api/last-playlist-link")
+def get_last_playlist_link():
+    try:
+        print("🎵 Fetching latest playlist link...")
+        cursor.execute("""
+            SELECT playlist_link 
+            FROM user_emotions 
+            ORDER BY timestamp DESC 
+            LIMIT 1;
+        """)
+        result = cursor.fetchone()
+
+        if not result:
+            print("⚠️ No playlist link found.")
+            return {"message": "No playlist link found."}
+
+        print("✅ Latest playlist link fetched:", result["playlist_link"])
+        return {"playlist_link": result["playlist_link"]}
+
+    except Exception as e:
+        print("❌ Error fetching playlist link:", e)
+        return {"error": f"Error fetching playlist link: {str(e)}"}
+
 # @app.post("/api/submit")
 # async def submit_data(
 #     answers: str = Form(None),
@@ -539,7 +562,205 @@ def get_user_emotions(email: str):
         conn.rollback()
         return {"error": f"Error fetching user emotions: {str(e)}"}
 
-    
+import re
+
+def parse_duration(duration_str):
+    """Convert 'MM:SS' string to total seconds. Returns 0 if invalid."""
+    if not duration_str or not re.match(r'^\d+:\d+$', duration_str):
+        return 0
+    minutes, seconds = map(int, duration_str.split(":"))
+    return minutes * 60 + seconds
+
+def format_seconds_to_hhmmss(total_seconds):
+    """Convert seconds to 'HH:MM:SS' format."""
+    hours = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+    seconds = total_seconds % 60
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+@app.get("/api/song-durations-summary/{email}")
+def get_song_durations_summary(email: str):
+    try:
+        print(f"🔍 Fetching song durations for user: {email}")
+
+        # 1. Fetch all song durations
+        cursor.execute("""
+            SELECT 
+                song_1_duration, song_2_duration, song_3_duration, 
+                song_4_duration, song_5_duration
+            FROM user_emotions
+            WHERE email = %s;
+        """, (email,))
+        all_entries = cursor.fetchall()
+
+        total_duration_all = 0
+        for row in all_entries:
+            durations = [parse_duration(row[col]) for col in row]
+            total_duration_all += sum(durations)
+
+        print(f"🎧 Total duration from ALL entries: {total_duration_all} seconds")
+
+        # 2. Fetch last entry durations
+        cursor.execute("""
+            SELECT 
+                song_1_duration, song_2_duration, song_3_duration, 
+                song_4_duration, song_5_duration
+            FROM user_emotions
+            WHERE email = %s
+            ORDER BY timestamp DESC
+            LIMIT 1;
+        """, (email,))
+        latest = cursor.fetchone()
+        total_duration_last = sum([parse_duration(latest[col]) for col in latest]) if latest else 0
+
+        print(f"🎶 Total duration from LAST entry: {total_duration_last} seconds")
+
+        return {
+            "email": email,
+            "total_duration_all_entries": {
+                "seconds": total_duration_all,
+                "formatted": format_seconds_to_hhmmss(total_duration_all)
+            },
+            "total_duration_last_entry": {
+                "seconds": total_duration_last,
+                "formatted": format_seconds_to_hhmmss(total_duration_last)
+            }
+        }
+
+    except Exception as e:
+        print("❌ Error:", e)
+        conn.rollback()
+        return {"error": f"Error fetching durations: {str(e)}"}
+
+@app.get("/api/last-songs-with-durations/{email}")
+def get_last_songs_with_durations(email: str):
+    try:
+        print(f"🎵 Fetching last songs & durations for user: {email}")
+
+        # Updated query with corrected column names
+        cursor.execute("""
+            SELECT 
+                song_1_name, song_2_name, song_3_name, song_4_name, song_5_name,
+                song_1_duration, song_2_duration, song_3_duration, song_4_duration, song_5_duration
+            FROM user_emotions
+            WHERE email = %s
+            ORDER BY timestamp DESC
+            LIMIT 1;
+        """, (email,))
+
+        last_entry = cursor.fetchone()
+        if not last_entry:
+            return {
+                "email": email,
+                "songs": [],
+                "message": "No data found."
+            }
+
+        # Extract song names and durations with updated keys
+        song_names = [
+            last_entry["song_1_name"], last_entry["song_2_name"], last_entry["song_3_name"],
+            last_entry["song_4_name"], last_entry["song_5_name"]
+        ]
+
+        song_durations = [
+            last_entry["song_1_duration"], last_entry["song_2_duration"], last_entry["song_3_duration"],
+            last_entry["song_4_duration"], last_entry["song_5_duration"]
+        ]
+
+        # Combine names and durations
+        songs_with_durations = [
+            {"name": name, "duration": duration}
+            for name, duration in zip(song_names, song_durations)
+        ]
+
+        print(f"✅ Songs with durations: {songs_with_durations}")
+        return {
+            "email": email,
+            "songs": songs_with_durations
+        }
+
+    except Exception as e:
+        print("❌ Error:", e)
+        conn.rollback()
+        return {"error": f"Error fetching last songs with durations: {str(e)}"}
+
+
+from collections import Counter
+
+@app.get("/api/emotions/{email}")
+def get_all_final_emotions(email: str):
+    try:
+        print(f"🔍 Fetching final_emotion values for user: {email}")
+
+        cursor.execute("""
+            SELECT final_emotion 
+            FROM user_emotions 
+            WHERE email = %s
+            ORDER BY timestamp ASC;
+        """, (email,))
+
+        rows = cursor.fetchall()
+        #print(f"🧾 Raw rows from DB: {rows}")
+
+        final_emotions = [row["final_emotion"] for row in rows if row["final_emotion"] is not None]
+        #print(f"✅ Final emotions extracted: {final_emotions}")
+
+        # ✅ Count occurrences of each emotion
+        emotion_counts = dict(Counter(final_emotions))
+        print(f"📊 Emotion counts: {emotion_counts}")
+
+        return {
+            "email": email,
+            "final_emotions": final_emotions,
+            "emotion_counts": emotion_counts
+        }
+
+    except Exception as e:
+        print("❌ Error fetching emotions:", e)
+        conn.rollback()
+        return {"error": f"Error fetching emotions: {str(e)}"}
+
+
+@app.get("/api/weekly-listening-minutes/{email}")
+def get_weekly_listening_time(email: str):
+    try:
+        print(f"📈 Fetching weekly listening time for {email}...")
+
+        query = """
+            SELECT 
+                TO_CHAR(timestamp, 'Dy') AS day,
+                SUM( 
+                    COALESCE(split_part(song_1_duration, ':', 1)::int * 60 + split_part(song_1_duration, ':', 2)::int, 0) +
+                    COALESCE(split_part(song_2_duration, ':', 1)::int * 60 + split_part(song_2_duration, ':', 2)::int, 0) +
+                    COALESCE(split_part(song_3_duration, ':', 1)::int * 60 + split_part(song_3_duration, ':', 2)::int, 0) +
+                    COALESCE(split_part(song_4_duration, ':', 1)::int * 60 + split_part(song_4_duration, ':', 2)::int, 0) +
+                    COALESCE(split_part(song_5_duration, ':', 1)::int * 60 + split_part(song_5_duration, ':', 2)::int, 0)
+                ) / 60.0 AS minutes
+            FROM user_emotions
+            WHERE email = %s
+              AND timestamp >= CURRENT_DATE - INTERVAL '6 days'
+            GROUP BY day
+            ORDER BY MIN(timestamp);
+        """
+
+        cursor.execute(query, (email,))
+        rows = cursor.fetchall()
+
+        # ✅ Convert DB result to dict { "Mon": minutes, ... }
+        data_map = {row["day"]: round(row["minutes"], 2) for row in rows}
+
+        # ✅ Define all 7 days (ensure consistent order for graph)
+        week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        result = [{"day": day, "minutes": data_map.get(day, 0)} for day in week_days]
+
+        print("✅ Final weekly data with padding:", result)
+        return result
+
+    except Exception as e:
+        print("❌ Error fetching weekly listening time:", e)
+        conn.rollback()
+        return {"error": f"Error fetching weekly listening time: {str(e)}"}
+
 # if __name__ == "__main__":
 #     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
 

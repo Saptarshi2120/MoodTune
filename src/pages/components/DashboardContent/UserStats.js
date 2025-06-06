@@ -7,12 +7,12 @@ function UserStats({ dailyListeningHours, last30DaysListeningHours }) {
       <div className="stat-card">
         <h3>User Stats</h3>
         <div className="stat-item">
-          <span className="label">Daily Listening Time:</span>
-          <span className="value">{dailyListeningHours} hours</span>
+          <span className="label">Last Listening Time:</span>
+          <span className="value">{dailyListeningHours}</span>
         </div>
         <div className="stat-item">
           <span className="label">Last 30 Days Listening Time:</span>
-          <span className="value">{last30DaysListeningHours} hours</span>
+          <span className="value">{last30DaysListeningHours}</span>
         </div>
       </div>
     </div>

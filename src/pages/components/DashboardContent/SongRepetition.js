@@ -1,24 +1,34 @@
+// SongRepetition.js
 import React from 'react';
 import './SongRepetition.css';
 
+const colorPalette = ["#FF9999", "#D4AC0D", "#28B463", "#1ABC9C", "#5DADE2", "#D63384"];
+
 function SongRepetition({ dailySongRepetitions }) {
-  const maxRepetition = Math.max(...dailySongRepetitions.map(item => item.count), 16); // Assuming max repetition around 16
+  const maxDuration = Math.max(...dailySongRepetitions.map(item => item.durationSeconds), 60);
 
   return (
     <div className="song-repetition-container">
-      <h3>Song Repetition</h3>
+      <h3>Last Played Songs (Durations in sec)</h3>
       <div className="bar-chart">
-        {dailySongRepetitions.map((item) => (
-          <div key={item.song} className="bar-wrapper">
-            <div
-              className="bar"
-              style={{ height: `${(item.count / maxRepetition) * 100}%` }}
-            >
-              <span className="bar-label">{item.count}</span>
+        {dailySongRepetitions.map((item, index) => {
+          const heightPercent = (item.durationSeconds / maxDuration) * 100;
+
+          return (
+            <div key={item.song} className="bar-wrapper">
+              <div
+                className="bar"
+                style={{
+                  height: `${heightPercent}%`,
+                  backgroundColor: colorPalette[index % colorPalette.length],
+                }}
+              >
+                <span className="bar-label">{item.durationSeconds}</span>
+              </div>
+              <div className="song-label">{item.song}</div>
             </div>
-            <div className="song-label">{item.song}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
