@@ -195,7 +195,7 @@ const HomePage = () => {
             <h2 className={`text-2xl font-semibold mb-4 ${isDarkMode ? "text-white" : "text-gray-800"}`}>
               You feel! We care, because caring isn’t optional — it’s our core.
             </h2>
-            <div className="flex justify-center gap-6">
+            <div className="flex justify-center gap-2">
               <button className="text-4xl hover:scale-125 transition-transform" title="Delightful">🥰</button>
   <button className="text-4xl hover:scale-125 transition-transform" title="Joy">😂</button>
   <button className="text-4xl hover:scale-125 transition-transform" title="Happy">😊</button>

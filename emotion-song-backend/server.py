@@ -538,6 +538,30 @@ def get_user_emotions(email: str):
         print("❌ Exception occurred:", e)
         conn.rollback()
         return {"error": f"Error fetching user emotions: {str(e)}"}
+    
+
+@app.get("/api/last-playlist-link")
+def get_last_playlist_link():
+    try:
+        print("🎵 Fetching latest playlist link...")
+        cursor.execute("""
+            SELECT playlist_link 
+            FROM user_emotions 
+            ORDER BY timestamp DESC 
+            LIMIT 1;
+        """)
+        result = cursor.fetchone()
+
+        if not result:
+            print("⚠ No playlist link found.")
+            return {"message": "No playlist link found."}
+
+        print("✅ Latest playlist link fetched:", result["playlist_link"])
+        return {"playlist_link": result["playlist_link"]}
+
+    except Exception as e:
+        print("❌ Error fetching playlist link:", e)
+        return {"error": f"Error fetching playlist link: {str(e)}"}
 
     
 # if __name__ == "__main__":
