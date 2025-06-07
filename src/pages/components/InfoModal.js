@@ -168,24 +168,28 @@ const InfoModal = ({ isOpen, onClose }) => {
         <h2 className="text-xl font-semibold mb-4">About MoodTunes</h2>
 
         {/* Scrollable content area */}
-        <div className="overflow-y-auto text-gray-600 mb-4 pr-2" style={{ maxHeight: '60vh' }}>
-          {/* Inserted image */}
-          <img
-            src={moodtunesLogo}
-            alt="MoodTunes Logo"
-            className="w-full h-auto mb-4 rounded-lg shadow"
-          />
-          
-          <p>
-            MoodTune is an intelligent mood-based song recommendation system designed to personalize music suggestions by understanding the user's emotions and sentiments. The journey begins with a secure OAuth-based login system powered by JWT tokens to manage user sessions effectively. Users respond to a set of curated questions intended to reflect their current emotional state, along with selecting their preferred song language.
-            <br /><br />
-            MoodTune processes these responses using NLP models to extract both textual emotions (Joy, Sadness, Fear, Anger, Disgust, Surprise, Neutral) and sentiments (Positive, Negative, Neutral). Emotions are mapped to sentiments and then fused using a weighted scoring system (60% emotion, 40% sentiment). These insights are organized into a 7x3 emotion-sentiment matrix, which determines the user’s final mood profile.
-            <br /><br />
-            The final mood, sentiment, and language preferences are passed to an LLM (Large Language Model) that generates an optimized search query. This query is used to fetch highly relevant results from the Spotify API, including the top 5 songs and playlists, each with associated cover art and clickable links.
-            <br /><br />
-            The backend is built using FastAPI, the frontend with React, and data is stored in PostgreSQL. MoodTune offers an emotionally intelligent music discovery experience that’s deeply personalized and dynamic.
-          </p>
-        </div>
+        <div
+  className="overflow-y-auto text-gray-600 mb-4 pr-2 px-4 text-justify"
+  style={{ maxHeight: '60vh' }}
+>
+  {/* Inserted image */}
+  <img
+    src={moodtunesLogo}
+    alt="MoodTunes Logo"
+    className="w-full h-auto mb-4 rounded-lg shadow"
+  />
+
+  <p>
+    MoodTune is an intelligent mood-based song recommendation system designed to personalize music suggestions by understanding the user's emotions and sentiments. The journey begins with a secure OAuth-based login system powered by JWT tokens to manage user sessions effectively. Users respond to a set of curated questions intended to reflect their current emotional state, along with selecting their preferred song language.
+    <br /><br />
+    MoodTune processes these responses using NLP models to extract both textual emotions (Joy, Sadness, Fear, Anger, Disgust, Surprise, Neutral) and sentiments (Positive, Negative, Neutral). Emotions are mapped to sentiments and then fused using a weighted scoring system (60% emotion, 40% sentiment). These insights are organized into a 7x3 emotion-sentiment matrix, which determines the user’s final mood profile.
+    <br /><br />
+    The final mood, sentiment, and language preferences are passed to an LLM (Large Language Model) that generates an optimized search query. This query is used to fetch highly relevant results from the Spotify API, including the top 5 songs and playlists, each with associated cover art and clickable links.
+    <br /><br />
+    The backend is built using FastAPI, the frontend with React, and data is stored in PostgreSQL. MoodTune offers an emotionally intelligent music discovery experience that’s deeply personalized and dynamic.
+  </p>
+</div>
+
 
         {/* Control Buttons */}
         <div className="flex justify-between items-center mt-4">
