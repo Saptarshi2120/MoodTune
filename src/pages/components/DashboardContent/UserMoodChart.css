@@ -1,51 +1,42 @@
-.user-mood-chart-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.user-mood-chart-container h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  color: #555;
-  text-align: center;
-}
-
-.mood-chart-horizontal-bar {
+/* Scoped to the UserMoodChart only */
+.user-mood-visualization {
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; Remove this line */
-  height: 150px; /* Adjust the overall height of the chart */
+  gap: 10px;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 8px;
 }
 
-.mood-bar-horizontal-container {
+.user-mood-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
-.mood-label-horizontal-bar {
-  width: 80px; /* Adjust width for labels */
-  font-size: 0.9rem;
-  color: #777;
-  text-align: right;
-  margin-right: 10px;
+.user-mood-label {
+  width: 80px;
+  font-size: 14px;
+  color: #444;
+  text-transform: capitalize;
 }
 
-.mood-bar-horizontal {
-  background-color: #28a745; /* Default color */
-  height: 25px; /* Adjust height of the bar */
-  border-radius: 5px;
-  flex-grow: 1;
+.user-mood-bar-wrapper {
+  flex: 1;
+  background-color: #eee;
+  height: 20px;
+  margin: 0 10px;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.mood-count-horizontal-bar {
-  font-size: 0.9rem;
+.user-mood-bar {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.user-mood-count {
+  min-width: 20px;
+  font-size: 14px;
   color: #333;
-  margin-left: 10px;
-  min-width: 30px;
-  text-align: left;
 }
