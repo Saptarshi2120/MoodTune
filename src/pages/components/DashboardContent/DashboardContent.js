@@ -24,72 +24,7 @@ function DashboardContent() {
     return (min * 60) + sec;
   };
 
-  // useEffect(() => {
-  //   const fetchAllData = async () => {
-  //     setIsLoading(true);
-  //     setIsDataReady(false);
-
-  //     try {
-  //       const [
-  //         durationsRes,
-  //         repetitionsRes,
-  //         emotionsRes,
-  //         weeklyListeningRes
-  //       ] = await Promise.all([
-  //         fetch(`http://localhost:8000/api/song-durations-summary/${email}`),
-  //         fetch(`http://localhost:8000/api/last-songs-with-durations/${email}`),
-  //         fetch(`http://localhost:8000/api/emotions/${email}`),
-  //         fetch(`http://localhost:8000/api/weekly-listening-minutes/${email}`)
-  //       ]);
-
-  //       const durations = await durationsRes.json();
-  //       const repetitions = await repetitionsRes.json();
-  //       const emotions = await emotionsRes.json();
-  //       const weekly = await weeklyListeningRes.json();
-
-  //       // 🎧 Durations
-  //       setDailyListeningHours(durations.total_duration_last_entry?.formatted || "Error");
-  //       setLast30DaysListeningHours(durations.total_duration_all_entries?.formatted || "Error");
-
-  //       // 🔁 Song Repetitions
-  //       if (repetitions.songs) {
-  //         const parsedSongs = repetitions.songs.map(song => ({
-  //           song: song.name,
-  //           durationSeconds: parseDurationToSeconds(song.duration),
-  //         }));
-
-  //         const maxDuration = Math.max(...parsedSongs.map(item => item.durationSeconds), 60);
-
-  //         const formatted = parsedSongs.map(item => ({
-  //           ...item,
-  //           heightPercent: (item.durationSeconds / maxDuration) * 90 + 10
-  //         }));
-
-  //         setDailySongRepetitions(formatted);
-  //       }
-
-  //       // 😊 Emotions
-  //       setEmotionCounts(emotions.emotion_counts || {});
-
-  //       // ⏱️ Weekly Listening Data
-  //       if (Array.isArray(weekly)) {
-  //         setListeningMinutesData(weekly);
-  //       } else {
-  //         setListeningMinutesData([]);
-  //       }
-
-  //       // ✅ After ALL data is fetched and states are updated
-  //       setIsDataReady(true);
-
-  //     } catch (error) {
-  //       console.error("❌ Error loading dashboard data:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchAllData();
-  // }, []);
+  
 
   useEffect(() => {
   const fetchAllData = async () => {
@@ -203,3 +138,8 @@ function DashboardContent() {
 }
 
 export default DashboardContent;
+
+
+
+
+
