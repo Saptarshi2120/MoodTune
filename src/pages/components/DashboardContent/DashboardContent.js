@@ -5,6 +5,7 @@ import UserMoodChart from './UserMoodChart';
 import ListeningMinutesChart from './ListeningMinutesChart';
 import SkeletonLoader from './SkeletonLoader'; // Make sure this is imported
 import './DashboardContent.css';
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 function DashboardContent() {
   const [dailyListeningHours, setDailyListeningHours] = useState(null);

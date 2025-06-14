@@ -591,7 +591,7 @@ const PaymentModal = ({ isOpen, onClose }) => {
             ) : (
               <>
                 <h2 className="text-center text-xl font-bold mb-2 text-gray-800">Pay Securely</h2>
-                <p className="text-center text-sm text-gray-600 mb-4">Amount Payable: <strong>₹500</strong></p>
+                <p className="text-center text-sm text-gray-600 mb-4">Amount Payable: <strong>₹29</strong></p>
 
                 <div className="flex justify-center mb-4 space-x-2">
                   {['card', 'upi'].map((type) => (
